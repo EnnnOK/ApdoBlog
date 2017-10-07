@@ -4,8 +4,3 @@ layout: post
 title: Git manual 
 --- 
 ```
-baseurl: /ApdoBlog
-markdown: kramdown
-kramdown:
-  input:  GFM
-  use_coderay: true
