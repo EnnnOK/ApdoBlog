@@ -1,0 +1,6 @@
+dfsj_jq(document).ready(function(){dfsj_jq(".dfsj_bkgg").click(function(){dfsj_jq(".dfsj_rules").slideToggle()})});
+dfsj_jq("#anc").slide({mainCell:"#ancl",autoPage:true,effect:"topLoop",autoPlay:true});
+dfsj_jq("img.dfsj_lazy").lazyload({effect : "fadeIn"});
+
+//dfsj_jq("#f_pst").css({position:'relative'});
+//dfsj_jq("#f_pst").prepend('<div style="position:absolute;right: 20px;top:2px;"><a class="xi2" href="http://account.oneplus.cn/" target="_blank">点击绑定手机号，完成实名制操作。（已绑定用户请忽略）</a></div>');
