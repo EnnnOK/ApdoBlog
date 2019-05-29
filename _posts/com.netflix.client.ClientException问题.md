@@ -27,3 +27,6 @@ FeignClient执行的http请求， url是 **http://服务名/方法名** 这样�
 
 哇， 这次debug费时半天， 差不多5H， SpringBoot的源码debug起来好长一串。通过这次debug， 对FeignClient有了更深入的了解。最后命名不要乱命名， 中划线， 下划线不能随便用。
 我以前以为下划线够稳了， 结果还有这种问题， 看来只能驼峰命名了。
+
+
+[主机名规则参考](https://www.ibm.com/support/knowledgecenter/zh/SSAW57_8.5.5/com.ibm.websphere.nd.multiplatform.doc/ae/rins_hostname.html)
