@@ -58,7 +58,7 @@ java.lang.ClassCastException: *.*.*.MyObjectC cannot be cast to *.*.*.MyObjectB
     </resultMap>
 ```
 
-注意到 collection返回的MyObjectCMapper的select方法，返回的是List<MyObjectC>而不是List<MyObjectB>
+注意到 collection返回的MyObjectCMapper的select方法，返回的是List里的类型是MyObjectC而不是MyObjectB
 之后我试了一下，确实能够set上，如果MyObjectC和MyObjectB之间有相同的字段的时候。
 
 这样可以解释成MyBatis返回的MyObjectA中的list其实是List<MyObjectC>而不是List<MyObjectB>，所以在序列化的时候报错了。
