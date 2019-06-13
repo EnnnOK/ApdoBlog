@@ -25,7 +25,7 @@ class MyObjectC{
 }
 ```
 
-其中A,B,C对应的都有数据库表。
+其中MyObjectA, MyObjectA, MyObjectA对应的都有数据库表。
 然后调用的时候发现，在服务A中拿到的MyObjectA的实例中，list中的MyObjectB的变量全为null，而MyObjectA的其他变量比如Title，Other这些不为空。但是在服务B中打断点看到的返回的MyObjectA中的list的MyObjectB的变量是有值的，这就很奇怪了。
 
 看到问题，我首先想到的是MyObjectA,MyObjectB是不是没有写get set方法导致序列化出问题了，然后检查了一下，MyObjectA,MyObjectB都有写，然后在A的熔断器里面打了日志，发现也没有进入熔断器。代码里面没有加ControllerAdvice，如果进入熔断器了，应该返回的是null，而不是部分数据为null。这种问题很奇怪，引起了我的兴趣。
@@ -38,9 +38,9 @@ MyObjectA a;
 // ...
 // 中间是从数据库查出来的a
 // ...
-// JSONUtils是com.alibaba.druid.support.json的，随便找了一个
-String string = JSONUtils.toString(a); // 此行报错 
-MyObjectA parseA = (MyObjectA) JSONUtils.parse(string);
+// JSON库是com.alibaba.fastjson.json的，随便找了一个
+String string = JSON.toJSONString(a); // 此行报错 
+MyObjectA parseA = (MyObjectA) JSON.parse(string);
 ```
 
 执行的时候发现报错，然后报错的原因是
