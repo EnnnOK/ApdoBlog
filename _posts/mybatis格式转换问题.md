@@ -70,3 +70,26 @@ TODO：
 3. 不同的Json包对上述情况进行测试
 
 写得有点乱，orz，后期整理。
+
+继续整理 FeignClient关于Json的解析
+SpringBoot默认的Json的库是Jackson，可以通过在配置文件里面修改为Google的gson和阿里的fastjson。
+MyObjectA里面的List如果是MyObjectC的话，意思是如果List出错的话，在SpringBoot返回的时候会出现问题，会导致返回的数据有部分会没有。
+SpringCloud的FeignClient默认是Apache的HttpClient，也可以通过配置文件修改为OKHttp的Client。
+默认情况下，FeignClient里面封装了一些HttpClient，有很多层猜到Apache的HttpClient，之前有断点进去大概看过。
+FeignClient相关的类在org.springframework.cloud:spring-cloud:netflix-core这个jar包下。
+Http请求后的Response会由SpringDecoder（实现了Decoder接口，这个接口的唯一方法是decode()，将Feign封装的Response（来自于HttpResponse）解析成JavaType）这个类来解析HttpResponse。意思就是这个类是用来将HttpResponse解析成JavaType的，相当于我们平时在代码里面写的
+```java
+HttpResponse response;
+String jsonString = EntityUtils.toString(response.getEntity());
+ObjectType object = (ObjectType)JSON.parse(jsonString);
+```
+
+在SpringDecoder的decode()函数中，会有HttpMessageConverter接口的实现类，查看实现类，可以看到有很多第三方库都实现了这个接口，包括Jackson，Gson，fastjson等，还有一些没见过的库。意思如果你自己实现了一个解析json的库，要想让FeignClient用你的库来解析http饭后的json，你的库中就应该实现这个接口。接下来在Jackson的实现类里面看到了具体的实现，没什么特别的，就将HttpResponse里面的body读出来，然后用ObjectMapper转换成目标类，HttpResponse读出来的body，前面已经说到因为类型问题，会导致一些数据没有，然后转成目标类的的时候，又有些数据没有，这就导致了最后服务里面的问题。
+
+总结一下前面所说的问题：主要是因为MyBatis写SQL的时候，类型出错的问题，然后SpringBoot的http调用的时候，类经过了json序列化和反序列化两个步骤，因为类型的问题，两个步骤都丢失了一部分数据，最后导致数据缺失了。
+
+如果以后SpringBoot返回的数据有缺失的情况，或者SpringBoot微服务调用之间数据有缺失的情况，可以通过看传递的类的json序列化和反序列化是否有问题来确认。
+
+写的太乱了，后面再深入了解之后整理一下。
+
+TODO: 关于Jackson，fastjson，gson的工作原理还不清楚，需要学习的地方还太多了
