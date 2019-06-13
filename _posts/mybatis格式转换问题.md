@@ -45,7 +45,7 @@ MyObjectA parseA = (MyObjectA) JSONUtils.parse(string);
 
 执行的时候发现报错，然后报错的原因是
 ```java
-not support type : *.*.*MyObjectC
+java.lang.ClassCastException: *.*.*.MyObjectC cannot be cast to *.*.*.MyObjectB
 ```
 
 然后检查MyObjectA里面都没有MyObjectC的东西啊
@@ -58,7 +58,7 @@ not support type : *.*.*MyObjectC
     </resultMap>
 ```
 
-注意到 collection返回的MyObjectCMapper的select方法，返回的是List<MyObjectC>而不是List<MyObjectC>
+注意到 collection返回的MyObjectCMapper的select方法，返回的是List<MyObjectC>而不是List<MyObjectB>
 之后我试了一下，确实能够set上，如果MyObjectC和MyObjectB之间有相同的字段的时候。
 
 这样可以解释成MyBatis返回的MyObjectA中的list其实是List<MyObjectC>而不是List<MyObjectB>，所以在序列化的时候报错了。
