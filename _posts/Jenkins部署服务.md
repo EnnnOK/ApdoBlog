@@ -59,6 +59,16 @@ TODO LIST
 ```
 wmic process where (caption="java.exe" and commandline like "%jar%") get processid,commandline /value
 ```
+另外Windows下根据端口杀死进程的cmd代码： 8080是目标端口
+```
+@echo off
+setlocal enabledelayedexpansion
+for /f "tokens=1-5" %%a in ('netstat -ano ^| findstr "0.0.0.0:8080"') do (
+ taskkill /f /pid %%e
+)
+```
 
 上面的意思是查找进程的进程号，启动是的命令行参数，这个命令行参数里面有jar的参数，然后进程的名字叫java.exe，
 这个命令行的查找很奇怪，有点像SQL表达式，还有like正则，我估计后台应该也是一个类似于数据库的项目。
+
+等下次有空了，再帮前端同事用npm打包。
